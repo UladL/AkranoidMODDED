@@ -1,30 +1,46 @@
+function playMusic() {
+  let audio = new Audio("music.mp3");
+  audio.play()
+}
 // Connection CANVAS
 const CANVAS_NODE = document.getElementById("arkanoid");
 const CTX = CANVAS_NODE.getContext("2d");
 // THE BALL RADIUS
 const BALL_RADIUS = 10;
 
-//COLOR OF THE GAME ELEMENTS
-CTX.fillStyle = "#0095DD";
-CTX.font = "16px Arial";
 
+//RANDOM COLORS
+function change(i) {  
+  var doc = document.getElementById("background");  
+  var color =[ "black", "blue", "brown", "green"];  
+  for(i=0; i<color.length; i++){  
+       doc.style.backgroundColor = color[i];  
+       alert("my color is "+ color[i]);  
+/*if (i>=color.length){i=0;}*/  
+   }
+}  
+setInterval(function changebackground(){change(0)},1000);
+
+//COLOR OF THE GAME ELEMENTS
+CTX.fillStyle = "green";
+CTX.font = "21px Monaco";
 // OUR PLATFORM PAREMENTERS
 const PADDLE_HEIGHT = 10;
-const PADDLE_WIDTH = 75;
+const PADDLE_WIDTH = 50;
 
 // BLOCK PAREMETERS
-const BRICK_ROW_COUNT = 5; //COUNT ON EACH LINE
-const BRICK_COLUMN_COUNT = 3; // AMOU TOF COLUMNS
-const BRICK_WIDTH = 75; // HOW BIG IN WISTH
-const BRICK_HEIGHT = 20; // HOW TALL
-const BRICK_PADDING = 10; // SPACING BEETWEEN EACH BLOCK
-const BRICK_OFFSET = 30; // SPACING BEETWEEN EDGES OF THE FIELD
+const BRICK_ROW_COUNT = 6; //COUNT ON EACH LINE
+const BRICK_COLUMN_COUNT = 6; // AMOU TOF COLUMNS
+const BRICK_WIDTH = 55; // HOW BIG IN WISTH
+const BRICK_HEIGHT = 15; // HOW TALL
+const BRICK_PADDING = 5; // SPACING BEETWEEN EACH BLOCK
+const BRICK_OFFSET = 50; // SPACING BEETWEEN EDGES OF THE FIELD
 
 // BALL CORDINATES
 let ballX = CANVAS_NODE.width / 2; // THE BALL BE IN THE ,IDDLE
 let ballY = CANVAS_NODE.height - 30; // FOR THE BALL BE IN THE MIDDLE
-let dx = 2; // SPEED CGANGES IN X
-let dy = -2; // SPEED CHANGES IN Y
+let dx = 4; // SPEED CGANGES IN X
+let dy = -4; // SPEED CHANGES IN Y
 
 // PLATFORM POSITIONING
 let paddleX = (CANVAS_NODE.width - PADDLE_WIDTH) / 2;
@@ -71,7 +87,7 @@ function drawPaddle() {
   CTX.rect(
     paddleX,
     CANVAS_NODE.height - PADDLE_HEIGHT,
-    PADDLE_WIDTH,
+    PADDLE_WIDTH ,
     PADDLE_HEIGHT
   );
   CTX.fill();
@@ -88,7 +104,7 @@ function drawBricks() {
 
         // SAVING NEW CORDINATES
         bricks[c][r].x = BRICK_X; // X
-        bricks[c][r].y = BRICK_Y;// y
+        bricks[c][r].y = BRICK_Y; // y
 
         // Drawing them again if they are still there
         CTX.beginPath();
@@ -107,10 +123,10 @@ function drawScore() {
 
 // drawing lives
 function drawLives() {
-  CTX.fillText("Жизней: " + lives, CANVAS_NODE.width - 85, 20);
+  CTX.fillText("Жизней: " + lives, CANVAS_NODE.width - 150, 20);
 }
 
-// Decetio of collusio if true staus = 0
+// Decetion of collusion if true staus = 0
 function detectCollision() {
   for (let c = 0; c < BRICK_COLUMN_COUNT; c++) { // same going trough
     for (let r = 0; r < BRICK_ROW_COUNT; r++) { // same but for y
@@ -119,24 +135,24 @@ function detectCollision() {
       // if the brick is still there then
       if (brick.status === 1) {
         // FORMULA IF A COLLUSION HAPPENED
-        const isCollisionTrue =
+        const isCollisionTrue = 
         ballX > brick.x &&
         ballX < brick.x + BRICK_WIDTH &&
         ballY > brick.y &&
         ballY < brick.y + BRICK_HEIGHT;
-
+       
         // IF IT DID THEN:
         if (isCollisionTrue) {
           dy = -dy; // BALL GOING OTHER WAY DOWN
           brick.status = 0; //  STAUS 0
-
           score++; // ADD SCORE
-
           // IF SCORE = AMOUNT OF BRICKS WE WIN
           if (score === BRICK_ROW_COUNT * BRICK_COLUMN_COUNT) {
             alert("Вы выиграли!");
-            // RELOAING THE PAGE
-            document.location.reload();
+// RELOAING THE PAGE
+            let score = score;
+            let lives = lives;
+            
           }
         }
       }
@@ -144,19 +160,21 @@ function detectCollision() {
   }
 }
 
+
 // DRAWING EVERYTHING
 function draw() {
   // CLEARING THE PATH AFTER THE BALL MOVES
   CTX.clearRect(0, 0, CANVAS_NODE.width, CANVAS_NODE.height);
 
   // DRAWING EVERYTHING AGAIN
+
   drawBricks();
   drawBall();
   drawPaddle();
   drawScore();
   drawLives();
   detectCollision();
-
+ 
 
   // IF THE BALL TOUCHES EDGE OF THE LEFT BORDER OR RIGHT BORDER
   if (ballX + dx < BALL_RADIUS || ballX + dx > CANVAS_NODE.width - BALL_RADIUS) {
@@ -197,5 +215,5 @@ function draw() {
   // MAKING THE ANIMATIO TO CONTINUE FOREVER
   requestAnimationFrame(draw);
 }
-
+playMusic();
 draw();

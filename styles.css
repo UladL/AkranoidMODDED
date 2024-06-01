@@ -1,11 +1,14 @@
 * {
-    padding: 0;
-    margin: 0;
-  }
+  padding: 0;
+  margin: 0;
 
+}
 
-  #arkanoid {
-    background: #eee;
-    display: block;
-    margin: 0 auto;
-  }
+#arkanoid {
+  background: black;
+  display: block;
+  margin: 0 auto;
+}
+#myVideo{
+  z-index: 2;
+}
